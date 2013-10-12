@@ -32,7 +32,18 @@
 */
 
 /*global exports:true, generateStatement:true, generateExpression:true, require:true, global:true*/
-(function () {
+(function (root, factory) {
+    'use strict';
+    // Universal Module Definition (UMD) to support AMD, CommonJS/Node.js,
+    // Rhino, and plain browser loading.
+    if (typeof define === 'function' && define.amd) {
+        define(['exports'], factory);
+    } else if (typeof exports !== 'undefined') {
+        factory(exports);
+    } else {
+        factory((root.escodegen = {}));
+    }
+}(this, function (exports) {
     'use strict';
 
     var Syntax,
@@ -2115,5 +2126,5 @@
     exports.browser = false;
     exports.FORMAT_MINIFY = FORMAT_MINIFY;
     exports.FORMAT_DEFAULTS = FORMAT_DEFAULTS;
-}());
+})));
 /* vim: set sw=4 ts=4 et tw=80 : */
