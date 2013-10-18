@@ -1,16 +1,31 @@
-#game-canvas 
-{
+#game-canvas {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    vertical-align: middle;
-    border-style: inset;
+    border-style: ridge;
     border-width: 0.5em;
     border-color: white;
-    background: rgb(255, 255, 255)
+    background: rgb(255, 255, 255);
 }
-body 
-{
+
+.red-flag {
+    background: rgba(255, 0, 0, 0.5);
+}
+
+.spacer {
+    height: 1em;
+}
+
+.block-seg {
+    background: white;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
     background: #b5bdc8; /* Old browsers */
     background: -moz-linear-gradient(top, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b5bdc8), color-stop(36%,#828c95), color-stop(100%,#28343b)); /* Chrome,Safari4+ */

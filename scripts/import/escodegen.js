@@ -37,13 +37,13 @@
     // Universal Module Definition (UMD) to support AMD, CommonJS/Node.js,
     // Rhino, and plain browser loading.
     if (typeof define === 'function' && define.amd) {
-        define(['exports'], factory);
+        define(['exports', 'import/estraverse'], factory);
     } else if (typeof exports !== 'undefined') {
-        factory(exports);
+        factory(exports, require('estraverse'));
     } else {
         factory((root.escodegen = {}));
     }
-}(this, function (exports) {
+}(this, function (exports, estraverse) {
     'use strict';
 
     var Syntax,
@@ -71,8 +71,6 @@
         sourceMap,
         FORMAT_MINIFY,
         FORMAT_DEFAULTS;
-
-    estraverse = require('estraverse');
 
     Syntax = {
         AssignmentExpression: 'AssignmentExpression',
@@ -2120,11 +2118,10 @@
 
     FORMAT_DEFAULTS = getDefaultOptions().format;
 
-    exports.version = require('./package.json').version;
     exports.generate = generate;
     exports.attachComments = estraverse.attachComments;
     exports.browser = false;
     exports.FORMAT_MINIFY = FORMAT_MINIFY;
     exports.FORMAT_DEFAULTS = FORMAT_DEFAULTS;
-})));
+}));
 /* vim: set sw=4 ts=4 et tw=80 : */

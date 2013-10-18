@@ -1,11 +1,29 @@
 define([], function() {
-    var q = {}, grid = [],
+    var q = {}, grid = [], ent = {},
+    globalEntIdx = 1, fLay = [],
     row, column, pixel
+
     function init(r, c, px) {
         row = r, column = c, pixel = px;
         grid = new Array(r * c);
     }
     q.init = init;
+
+    function addObject(obj) {
+        ent[globalEntIdx] = obj;
+        var pIdx = obj.i * column + obj.j;
+        if(fLay[pIdx]) {
+            return 0;
+        }
+        return globalEntIdx++;
+    }
+    q.addObject = addObject;
+
+    function delObject(idx) {
+        delete ent[idx];
+    }
+    q.delObject = delObject;
+
 
     function assertBounds(i, j) {
         return ((i >= 0) && (i < row)) && ((j >= 0) && (j <column));
@@ -28,14 +46,19 @@ define([], function() {
     }
     q.set = set;
 
-    function move(i, j, dI, dJ) {
-        if(!assertBounds(i,j) || !assertBounds(i + dI, j + dJ)) {
+    function move(eId, dI, dJ) {
+        var e = ent[eId],
+        oP = e.i * column + e.j,
+        nP = (e.i + dI) * column + e.j + dJ,
+        isOccupied = !(fLay[nP]),
+        isValid = assertBounds(e.i, e.j) && assertBounds(e.i + dI, e.j + dJ);
+        if(!isValid || isOccupied) {
             return 0;
         }
-        var oP = i * column + j,
-        nP = (i + dI) * column + j + dJ;
-        grid[nP] = grid[oP];
-        grid[oP] = null;
+        fLay[nP] = fLay[oP],
+        fLay[oP] = null;
+        e.i += dI;
+        e.j += dJ;
         return 1;
     }
     q.move = move;
@@ -45,21 +68,22 @@ define([], function() {
         for(i = 0; i < grid.length; i++) {
             var r = ~~(i/ column),
             c = i % column,
-            val = grid[i];
+            val = grid[i] || fLay[i];
             if(val) {
                 var color = val.color || 'black';
                 ctx.fillRect(c * pixel, r * pixel, pixel, pixel);
             }
+            
         }
         // Drawing the GRID
         for(i = 0; i <= column; i++) {
-            ctx.fillRect(i * pixel - 1, 0, 2, row * pixel);
+            ctx.fillRect(i * pixel - 1, 0, 1, row * pixel);
         }
         for(i = 0; i <= row; i++) {
-            ctx.fillRect(0, i * pixel - 1, column * pixel, 2);
+            ctx.fillRect(0, i * pixel - 1, column * pixel, 1);
         }
     }
     q.debugDraw = debugDraw;
-
+    m=q;
     return q;
 })
