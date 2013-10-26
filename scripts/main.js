@@ -1,26 +1,51 @@
-require(['game/grid', 'game/comp', 'game/code'], 
-function (grid, c, code) {
+define(['code/iface', 'ui', 'level/test'], function(code, ui, lvl) {
+
     // Helper
     function gI(id) {
         return document.getElementById(id);
     }
 
-    var canvas = gI('game-canvas'),
+    canvas = gI('game-canvas'),
     codeArea = gI('control-code'),
-    logArea = gI('error-log');
-    ctx = canvas.getContext('2d');
-    canvas.width = 1024;
-    canvas.height = 512;
+    logArea = gI('error-log'),
+    startButton = gI('start-stub'),
+    resetButton = gI('reset-stub');
+    var uCount,  _reset = false;
 
-    const pixel = 16; 
-    // Calculate from above
-    grid.init(32, 64, 16);
-    code.init(codeArea, logArea);
-    var p = new c.Player(1, 1);
+    function start(codeObj) {
+        ui.easeScroll(canvas);
+        startButton.disabled = true;
+        resetButton.disabled = false;
+        lvl.start(codeObj);
+    }
+
+    function init() {
+        function startClick() {
+            var rObj = code.checkCode();
+            if(rObj) {
+                start(rObj);
+            } else {
+                ui.easeScroll(logArea);
+            }
+        }
+        function resetClick() {
+            lvl.reset();
+            startButton.disabled = false;
+            resetButton.disabled = true;
+        }
+        startButton.addEventListener('click', startClick);
+        resetButton.addEventListener('click', resetClick);
+        lvl.init(canvas);
+        code.init(codeArea, logArea);
+        code.logEntry(lvl.getPlayerApiDoc());
+        update();
+    }
+
     function update() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        grid.debugDraw(ctx);
+        lvl.update();
+        ui.update();
         requestAnimationFrame(update);
     }
-    update();
+
+    init();
 })

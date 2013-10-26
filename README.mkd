@@ -1,0 +1,41 @@
+# Overview
+
+## API Doc Object
+
+* Has members,
+    + __type__ : Function _or_ variable
+    + __summary__ : Breif description
+    + __example__ : Sample code
+
+* Functions,
+    + __makeElement__ : This function returns a `<div>` element containing formatted HTML representation of this object. Also remember to use _pygments_ syntax highlighting for code samples.
+
+
+# Structural
+
+* `main` module loads the `code` module and a `level`
+
+* The `level` initializes the `grid`
+
+* Since `level` is static, load `player` object through the [AMD](#External) system.
+
+## Grid
+
+* _Core_ game component
+
+* Singleton module that represents a 2D grid
+
+* Is intialized with width, height and pixel size values
+
+* Allows object to register themselves on positions,
+    + On registering, it returns a identifiable integer
+    + This integer is used later to uniqely identify the object on the grid
+    + All objects that register _must_ have `i` and `j` member integers
+
+* Has a `debugDraw` function that draws the object onto the grid ;; **TODO: Remove**
+
+# Code
+
+* Sandboxed execution
+
+# External

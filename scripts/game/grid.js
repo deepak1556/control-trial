@@ -1,7 +1,6 @@
 define([], function() {
     var q = {}, grid = [], ent = {},
-    globalEntIdx = 1, fLay = [],
-    row, column, pixel
+    globalEntIdx = 1, row, column, pixel; fLay = [];
 
     function init(r, c, px) {
         row = r, column = c, pixel = px;
@@ -10,16 +9,18 @@ define([], function() {
     q.init = init;
 
     function addObject(obj) {
-        ent[globalEntIdx] = obj;
         var pIdx = obj.i * column + obj.j;
         if(fLay[pIdx]) {
             return 0;
         }
+        fLay[pIdx] = obj;
+        ent[globalEntIdx] = obj;
         return globalEntIdx++;
     }
     q.addObject = addObject;
 
     function delObject(idx) {
+        delete fLay[ent[idx].i * column + ent[idx].j];
         delete ent[idx];
     }
     q.delObject = delObject;
@@ -47,12 +48,14 @@ define([], function() {
     q.set = set;
 
     function move(eId, dI, dJ) {
+        console.log(arguments);
         var e = ent[eId],
         oP = e.i * column + e.j,
         nP = (e.i + dI) * column + e.j + dJ,
-        isOccupied = !(fLay[nP]),
+        isOccupied = (fLay[nP]),
         isValid = assertBounds(e.i, e.j) && assertBounds(e.i + dI, e.j + dJ);
         if(!isValid || isOccupied) {
+            console.log(isValid, isOccupied);
             return 0;
         }
         fLay[nP] = fLay[oP],
