@@ -2,7 +2,7 @@ define(['game/grid'], function (grid) {
     var self, _played = false;
     function Player(iI, iJ) { 
         if(self) {
-            console.log("Something's UP... This ain't supposed to happen")
+            console.log("Deleting old player");
             grid.delObject(self.gIdx);
         }
         self = this;
@@ -32,13 +32,11 @@ define(['game/grid'], function (grid) {
         NE: 7,
         NW: 5
     }
-    DIR.doc = "Constants for cardinal and ordinal directions {NSEW}"
 
     var TYPE = {
         block: 1<<1,
         unknown: 1<<0,
     }
-    TYPE.doc = "Constants defining type of sensed object"
 
     // Utility function
     function getDisplacement(dir) {
@@ -54,6 +52,18 @@ define(['game/grid'], function (grid) {
 
     function doubleAdd(a, b) {
         return [a[0]+b[0], a[1]+b[1]];
+    }
+
+    function signum(x) {
+        return (x == 0) ? 0 : (x < 0) ? -1 : 1;
+    }
+
+    function convDir(dV, dH) {
+        var ans = 0;
+        ans += signum(dV) + 2;
+        ans <<= 2;
+        ans += signum(dH) + 2;
+        return ans;
     }
 
     // API functions
@@ -78,9 +88,6 @@ define(['game/grid'], function (grid) {
             }
         }
     }
-    move.apiDoc = "Moves in the given direction.\n" +
-        " Use constants from DIR\n" +
-        " Ends turn..\n";
 
     function sense() {
         pos = [self.i, self.j];
@@ -94,7 +101,6 @@ define(['game/grid'], function (grid) {
         }
         return dCMap;
     }
-    sense.apiDoc = "Senses nearby objects"
 
     var apiObject = {
         player: {
@@ -105,6 +111,9 @@ define(['game/grid'], function (grid) {
             DIR: DIR,
             TYPE: TYPE,
         },
+        util : {
+            convDir: convDir,
+        }
     };
 
     function getAPIObject() {
@@ -117,5 +126,13 @@ define(['game/grid'], function (grid) {
     }
     Player.resetFlags = resetFlags;
 
+    k=Player;
     return Player;
+    // TODO: documentation fixup
+    /* sense.apiDoc = "Senses nearby objects"
+     * move.apiDoc = "Moves in the given direction.\n" +
+     *     " Use constants from DIR\n" +
+     *     " Ends turn..\n";
+     * TYPE.apiDoc = "Constants defining type of sensed object"
+     * DIR.apiDoc = "Constants for cardinal and ordinal directions {NSEW}" */
 })

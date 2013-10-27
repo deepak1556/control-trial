@@ -3,6 +3,14 @@ define([], function() {
     cbChain = [];
     const res = 2, speed = 4;
 
+    function newEl(type, parent) {
+        var el = document.createElement(type);
+        parent.appenChild(el);
+        return el;
+    }
+    q.newEl = newEl;
+
+
     function easeScroll(x, y, delT) {
         if (Math.abs(~~(scrollX - x)) < res && Math.abs(~~(scrollY - y)) < res) {
             return;

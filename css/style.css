@@ -1,19 +1,16 @@
 #game-canvas {
+    float: left;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    overflow: hidden;
     border-style: ridge;
     border-width: 0.5em;
     border-color: white;
     background: rgb(255, 255, 255);
 }
 
-.red-flag {
-    background: rgba(255, 0, 0, 0.5);
-}
-
 .spacer {
     height: 1em;
+    clear: left;
 }
 
 
@@ -26,8 +23,17 @@
     margin-right: auto;
 }
 
-#error-log {
+.fixed-scroll {
     height: 10.5em;
+    overflow-y: scroll;
+}
+
+.buttons {
+    float: left;
+}
+
+.error-flag {
+    width: 8px;
 }
 
 body {

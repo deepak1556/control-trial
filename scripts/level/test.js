@@ -7,10 +7,12 @@ function(grid, Player) {
         if(_state == 1) {
             if(--_time <= 0) {
                 _time = tTime;
-                console.log(player);
-                defFn.update(Player.getAPIObject());
+                try {
+                    defFn.update(Player.getAPIObject());
+                } catch(e) {
+                    console.log(e);
+                }
                 Player.resetFlags();
-                console.log("Played");
             }
         }
         draw();
@@ -46,18 +48,6 @@ function(grid, Player) {
         ctx.clearRect(0, 0, 1024, 512);
         grid.debugDraw(ctx);
     }
-
-    function getPlayerApiDoc() {
-        var doc = "",
-        apiObject = Player.getAPIObject();
-        for (sect in apiObject) {
-            for (key in apiObject[sect]) {
-                doc += sect+","+key+": "+apiObject[sect][key].doc+"<br>";
-            }
-        }
-        return doc;
-    }
-    q.getPlayerApiDoc = getPlayerApiDoc;
 
     return q;
 });

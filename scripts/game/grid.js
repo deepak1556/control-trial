@@ -25,7 +25,6 @@ define([], function() {
     }
     q.delObject = delObject;
 
-
     function assertBounds(i, j) {
         return ((i >= 0) && (i < row)) && ((j >= 0) && (j <column));
     }
@@ -66,6 +65,7 @@ define([], function() {
     }
     q.move = move;
 
+    // TODO: Move somewhere appropriate or remove
     function debugDraw(ctx) {
         var i;
         for(i = 0; i < grid.length; i++) {

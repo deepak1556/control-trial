@@ -1,19 +1,20 @@
 <html>
     <head>
-        <script data-main="scripts/main.js" src="scripts/import/require.js"> </script>
+        <script data-main="scripts/main.js" src="scripts/import/require.js">
+        </script>
         <link rel='stylesheet' type = 'text/css' href='css/style.css'>
         <link rel="stylesheet" type = 'text/css' href="css/codemirror.css">
         <title>BattleCode</title>
     </head>
     <body>
         <canvas id="game-canvas"></canvas>
-        <div class="spacer"></div>
         <div class="buttons">
-            <button id="start-stub">Start</button>
+            <button id="start-stub"></button>
+            <br>
             <button id="reset-stub">Reset</button>
         </div>
         <div class="spacer"></div>
-        <div id="error-log" class="block-seg"></div>
+        <div id="log-area" class="block-seg fixed-scroll"></div>
         <div class="spacer"></div>
         <div id="control-code" class="block-seg"></div>
         <div class="spacer"></div>
