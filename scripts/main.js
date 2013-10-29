@@ -6,7 +6,7 @@ function(editor, fx, lvl, log, parse) {
     logArea     = document.getElementById('log-area'),
     startButton = document.getElementById('start-stub'),
     resetButton = document.getElementById('reset-stub'),
-    time = 0,
+    time = 1,
     _state = 0;
 
     function InvalidStateException() {};
@@ -76,6 +76,7 @@ function(editor, fx, lvl, log, parse) {
         editor.clearFlags();
         log.progress('Code Successfully Parsed');
         fx.easeScroll(canvas);
+        lvl.start(defFn);
         return defFn;
     }
 

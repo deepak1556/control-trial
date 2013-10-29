@@ -1,9 +1,10 @@
-define(['game/grid', 'player/basic'], 
+define(['game/grid', 'player/basic', 'elements/log'], 
 function(grid, Player) {
     const pixel = 16;
     var q = {},
     canvas, player, ctx, defFn;
     function update() {
+        console.log('Turn update');
         try {
             defFn.update(Player.getAPIObject());
         } catch(e) {
