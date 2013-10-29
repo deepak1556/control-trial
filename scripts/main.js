@@ -1,14 +1,17 @@
-define(['elements/code', 'elements/effects', 'level/test', 'elements/log', 'code/parse'], 
-function(code, fx, lvl, log, parse) {
+define(['elements/editor', 'elements/effects', 'level/test', 'elements/log', 'code/parse'], 
+function(editor, fx, lvl, log, parse) {
+    const updateInterval = 50;
     var canvas  = document.getElementById('game-canvas'),
     codeArea    = document.getElementById('control-code'),
     logArea     = document.getElementById('log-area'),
     startButton = document.getElementById('start-stub'),
     resetButton = document.getElementById('reset-stub'),
+    time = 0,
     _state = 0;
 
     function InvalidStateException() {};
 
+    // State transitions
     function start(){
         if(_state != 1) {
             throw new InvalidStateException;
@@ -56,20 +59,21 @@ function(code, fx, lvl, log, parse) {
     }
 
     function checkCode() {
-        var codeText = code.getCode(),
+        var codeText = editor.getCode(),
         defFn;
         try {
             defFn = parse.extract(codeText);
         } catch(e) {
             log.error(e.description);
             if(typeof e != "VerifyException") {
-                code.flagLine(e.lineNumber);
+                editor.flagLine(e.lineNumber);
             }
             fx.easeScroll(logArea);
+            log.progess('Code failed to parse!')
             reset();
             return false;
         }
-        code.clearFlags();
+        editor.clearFlags();
         log.progress('Code Successfully Parsed');
         fx.easeScroll(canvas);
         return defFn;
@@ -77,7 +81,7 @@ function(code, fx, lvl, log, parse) {
 
     function init() {
         lvl.init(canvas);
-        code.init(codeArea);
+        editor.init(codeArea);
         log.init(logArea);
         reset();
         startButton.addEventListener('click', startButtonHandler);
@@ -86,9 +90,13 @@ function(code, fx, lvl, log, parse) {
     }
 
     function update() {
-        if(_state == 1) {
-            lvl.update();
+        if(_state == 2) {
+            if(!--time) {
+                lvl.update();
+                time = updateInterval;
+            }
         }
+        lvl.draw();
         fx.update();
         requestAnimationFrame(update);
     }

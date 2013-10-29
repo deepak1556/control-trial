@@ -1,21 +1,15 @@
 define(['game/grid', 'player/basic'], 
 function(grid, Player) {
-    const pixel = 16, tTime = 60;
-    var q = {}, _state = -1, _time = 0,
+    const pixel = 16;
+    var q = {},
     canvas, player, ctx, defFn;
     function update() {
-        if(_state == 1) {
-            if(--_time <= 0) {
-                _time = tTime;
-                try {
-                    defFn.update(Player.getAPIObject());
-                } catch(e) {
-                    console.log(e);
-                }
-                Player.resetFlags();
-            }
+        try {
+            defFn.update(Player.getAPIObject());
+        } catch(e) {
+            console.log(e);
         }
-        draw();
+        Player.resetFlags();
     }
     q.update = update;
 
@@ -48,6 +42,7 @@ function(grid, Player) {
         ctx.clearRect(0, 0, 1024, 512);
         grid.debugDraw(ctx);
     }
+    q.draw = draw;
 
     return q;
 });

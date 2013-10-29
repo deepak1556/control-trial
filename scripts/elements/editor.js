@@ -1,7 +1,7 @@
 define(['import/codemirror'],
 function() {
     var q = {},
-    logArea, editor;
+    logArea, codeMirror;
 
     const defaultCode = 
         "function update(api) {\n"+
@@ -13,23 +13,23 @@ function() {
 
     function flagLine(line) {
         line = line || 1;
-        if(typeof line == "number" && --line >= 0 && line < editor.lineCount()) {
+        if(typeof line == "number" && --line >= 0 && line < codeMirror.lineCount()) {
             var mark = document.createElement('div');
             mark.style.color = 'red';
             mark.style.fontSize = 16;
             mark.innerHTML = '•';
-            editor.setGutterMarker(line, 'error-flag', mark);
+            codeMirror.setGutterMarker(line, 'error-flag', mark);
         }
     }
     q.flagLine = flagLine;
 
     function clearFlags() {
-        editor.clearGutter('error-flag');
+        codeMirror.clearGutter('error-flag');
     }
     q.clearFlags = clearFlags;
 
     function init(codeArea) {
-        editor = CodeMirror(codeArea, {
+        codeMirror = CodeMirror(codeArea, {
             value: defaultCode,
             mode:  "javascript",
             lineNumbers: true,
@@ -40,7 +40,7 @@ function() {
     q.init = init;
 
     function getCode() {
-        return editor.getValue();
+        return codeMirror.getValue();
     }
     q.getCode = getCode;
 
